@@ -35,7 +35,6 @@ only a few pages. To serve these pages, we'll need to represent the following:
 - **Album**
 - **Track**
 - **User**
-- **Playlist**
 - **Purchase**
 
 The data model doesn't necessarily describe all the capabilities of the backend, just the
@@ -97,24 +96,6 @@ erDiagram
         string created_at "Timestamp"
         string updated_at "Timestamp"
     }
-    playlist {
-        int id PK
-        string(31) slug UK "Unique human-readable URL-safe identifier"
-        string(255) name "The name of the Playlist"
-        string(16384) description "Long text description (Nullable)"
-        string(255) cover_art_uri "Nullable"
-        int owner_id FK "User who owns this Playlist"
-        string created_at "Timestamp"
-        string updated_at "Timestamp"
-    }
-    playlist_track {
-        int id PK
-        int playlist_id FK
-        int track_id FK
-        int manual_order "The manual sorting order for the Track in the Playlist"
-        string added_at "Timestamp"
-        string updated_at "Timestamp"
-    } 
     user {
         int id PK 
         string(31) username UK ""
@@ -159,12 +140,9 @@ erDiagram
     album }o--o{ tag : "tag_album"
     track }|--o{ artist : "track_artist"
     track }o--o{ tag : "tag_track"
-    playlist ||--o{ playlist_track : ""
-    playlist_track }o--|| track : ""
     user }o--o{ artist : "user_following"
     user }o--o{ album : "user_collection_album"
     user }o--o{ track : "user_collection_track"
-    user ||--o{ playlist : ""
     user_purchase_album }o--|| album : ""
     user_purchase_album }o--|| user : ""
     user_purchase_track }o--|| track : ""
@@ -174,7 +152,7 @@ erDiagram
 ## Notes
 
 - While most of the many-to-many relationship tables are minimally simple (two columns, each containing IDs),
-  there are a few (`playlist_track`, `user_purchase_album`, `user_purchase_track`) that are
+  there are a couple (`user_purchase_album`, `user_purchase_track`) that are
   defined explicitly within the diagram because they are a touch more complex.
 
 ### Artists
@@ -213,3 +191,28 @@ track the relationships between the relevant entities.
 ### Artists
 - `verified` attribute to guard against impersonation
   - May also be used to claim **Artist**s without a linked **User**
+- **Playlist** model
+  - Could look something like
+    ```mermaid
+    erDiagram
+    playlist {
+        int id PK
+        string(31) slug UK "Unique human-readable URL-safe identifier"
+        string(255) name "The name of the Playlist"
+        string(16384) description "Long text description (Nullable)"
+        string(255) cover_art_uri "Nullable"
+        int owner_id FK "User who owns this Playlist"
+        string created_at "Timestamp"
+        string updated_at "Timestamp"
+    }
+    playlist_track {
+        int id PK
+        int playlist_id FK
+        int track_id FK
+        int manual_order "The manual sorting order for the Track in the Playlist"
+        string added_at "Timestamp"
+        string updated_at "Timestamp"
+    }  
+    playlist ||--o{ playlist_track : ""
+    playlist_track }o--|| track : ""
+    ```
