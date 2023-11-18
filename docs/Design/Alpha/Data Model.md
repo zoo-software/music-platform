@@ -216,3 +216,5 @@ track the relationships between the relevant entities.
     playlist ||--o{ playlist_track : ""
     playlist_track }o--|| track : ""
     ```
+- Allow **User**s to make purchases without an account. This is something we should
+  add before any full public release.
