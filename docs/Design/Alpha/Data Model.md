@@ -156,12 +156,10 @@ erDiagram
   defined explicitly within the diagram because they are a touch more complex.
 
 ### Artists
+- All **Artist**s must be linked to one or more real account so their profile can be managed by a **User**.
 - If an **Artist** is a group, it can be linked to individual **Artist**s as members so that **User**s
 can browse the **Artist**'s solo work or work with other groups. **User**s will also be able to browse 
 the groups of which an **Artist** is a member from the individual **Artist**'s page.
-- An **Artist** may be without a manager if a **User** uploads an **Album** and credits an artist who
-doesn't have an account. A dummy **Artist** entity would be created and would somehow have to be claimed
-by the real artist in the event they do decide to make an account.
 
 ### Album
 - Allows **Artist**s to specify a `release_year` if the exact `release_date` is unknown
